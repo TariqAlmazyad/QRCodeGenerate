@@ -3,7 +3,7 @@ import CoreImage.CIFilterBuiltins
 
 #if os(iOS) || os(watchOS) || os(tvOS)
 @available(iOS 14.0, *)
-public extension UIImage {
+extension UIImage {
     /// to generate QRCode by passing any object that confirms to Codable protocol
     /// - Parameters:
     ///   - anyCodableObject: Any object that confirms to Codable protocol
@@ -11,12 +11,12 @@ public extension UIImage {
     ///   - QRCodeColor: the outer color of QRCode
     /// - Returns: UIImage
     static func generateQRCode<T: Codable>(from anyCodableObject: T,
-                                           backgroundColor: CIColor,
-                                           QRCodeColor: CIColor) -> UIImage {
+                                           backgroundColor: CIColor = .clear,
+                                           QRCodeColor: CIColor = .white) -> UIImage {
+        let context = CIContext()
+        let filter = CIFilter.qrCodeGenerator()
+        guard let colorFilter: CIFilter = CIFilter(name: "CIFalseColor") else {return UIImage()}
         do {
-            let context = CIContext()
-            let filter = CIFilter.qrCodeGenerator()
-            guard let colorFilter: CIFilter = CIFilter(name: "CIFalseColor") else {return UIImage()}
             let data = try JSONEncoder().encode(anyCodableObject)
             filter.setValue(data, forKey: "inputMessage")
             colorFilter.setValue(filter.outputImage, forKey: "inputImage")
@@ -34,19 +34,19 @@ public extension UIImage {
     }
 }
 #elseif os(macOS)
-@available(macOS 10.15, *)
-public extension NSImage {
+@available(macOS 11.00, *)
+extension NSImage {
     /// to generate QRCode by passing any object that confirms to Codable protocol
     /// - Parameters:
     ///   - anyCodableObject: Any object that confirms to Codable protocol
     ///   - backgroundColor: the background of the QRCode
     ///   - QRCodeColor: the outer color of QRCode
     /// - Returns: NSImage
-    @available(macOS 11.0, *)
     static func generateQRCode<T: Codable>(from anyCodableObject: T, backgroundColor: CIColor, QRCodeColor: CIColor) -> NSImage {
         do {
             // Convert String to Data
             let data = try JSONEncoder().encode(anyCodableObject)
+            
             // Create CIFilter object for CIQRCodeGenerator
             guard let qrCodeFilter: CIFilter = CIFilter(name: "CIQRCodeGenerator") else { return NSImage(systemSymbolName: "xmark.octagon.fill", accessibilityDescription: nil) ?? NSImage() }
             
