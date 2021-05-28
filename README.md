@@ -69,6 +69,7 @@ Here is the steps below:
 <img width="1775" alt="Screen Shot 2021-05-28 at 11 32 50 PM" src="https://user-images.githubusercontent.com/34104180/120039309-5cdc9580-c00d-11eb-8dc3-a454108a2cef.png">
 
 
+and then you can import the library
 
 <img width="1751" alt="Screen Shot 2021-05-28 at 10 15 21 PM" src="https://user-images.githubusercontent.com/34104180/120038587-2eaa8600-c00c-11eb-903b-e3ff02412521.png">
 
