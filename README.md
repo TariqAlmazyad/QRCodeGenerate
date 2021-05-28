@@ -1,6 +1,6 @@
 # QRCodeGenerate for iOS, iPadOS, and MacOS
 
-QRCodeGenerate is a QRCode generater to generate qr image in iOS + iPadOS , and NSImage in MacOS, with full freedom of passing any codable object , and changing backgroundColor , QRCode color. 
+QRCodeGenerate is a QRCode generater to generate qrCode as image in iOS + iPadOS , and NSImage in MacOS, with full freedom of passing any codable object , and changing backgroundColor , QRCode color. 
 
 
 ```swift
