@@ -11,8 +11,8 @@ public extension UIImage {
     ///   - QRCodeColor: the outer color of QRCode
     /// - Returns: UIImage
     static func generateQRCode<T: Codable>(from anyCodableObject: T,
-                                           backgroundColor: CIColor = .clear,
-                                           QRCodeColor: CIColor = .white) -> UIImage {
+                                           backgroundColor: CIColor,
+                                           QRCodeColor: CIColor) -> UIImage {
         do {
             let context = CIContext()
             let filter = CIFilter.qrCodeGenerator()
@@ -42,6 +42,7 @@ public extension NSImage {
     ///   - backgroundColor: the background of the QRCode
     ///   - QRCodeColor: the outer color of QRCode
     /// - Returns: NSImage
+    @available(macOS 11.0, *)
     static func generateQRCode<T: Codable>(from anyCodableObject: T, backgroundColor: CIColor, QRCodeColor: CIColor) -> NSImage {
         do {
             // Convert String to Data
