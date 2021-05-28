@@ -14,6 +14,7 @@ QRCodeGenerate is a QRCode generater to generate qrCode as image in iOS + iPadOS
 
 
 
+## Code example below
 
 ```swift
 
@@ -66,8 +67,7 @@ struct PhoneView: View {
 <img width="1751" alt="Screen Shot 2021-05-28 at 10 15 21 PM" src="https://user-images.githubusercontent.com/34104180/120038587-2eaa8600-c00c-11eb-903b-e3ff02412521.png">
 
 
-
-
+## Code example below
 
 ```swift
 
