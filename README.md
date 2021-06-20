@@ -119,4 +119,40 @@ struct MacOSView: View {
 }
 ```
 
+## With custom logo for (iOS/ iPadOS)
+
+<img width="891" alt="Screen Shot 2021-06-20 at 1 17 14 PM" src="https://user-images.githubusercontent.com/34104180/122670324-29cf9100-d1ca-11eb-8425-6907711d4434.png">
+
+
+```swift
+
+import SwiftUI
+import QRCodeGenerate
+
+struct PhoneView: View {
+    @State private (set) var user = User(email: "sample@gmail.com",
+                                         name: "username")
+
+    var body: some View {
+        LazyVGrid(columns: [
+            GridItem(.adaptive(minimum: 200, maximum: 240))
+        ], alignment: .center, content: {
+            generateQRCode(from: user, backgroundColor: .black, QRCodeColor: .white,
+                           qrCodeSize: 200,logo: Image("logo"), logoSize: 60)
+                
+            generateQRCode(from: user, backgroundColor: .black, QRCodeColor: .cyan,
+                           qrCodeSize: 200 ,logo: Image("linkedin"), logoSize: 60)
+            
+            generateQRCode(from: user, backgroundColor: .black, QRCodeColor: .gray,
+                           qrCodeSize: 200 ,logo: Image("twitter"), logoSize: 60)
+            
+            generateQRCode(from: user, backgroundColor: .black, QRCodeColor: .white,
+                           qrCodeSize: 200 ,logo: Image("xcode"), logoSize: 60)
+                
+        })
+    }
+}
+
+```
+
 
