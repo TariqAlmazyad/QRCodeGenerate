@@ -1,6 +1,7 @@
 import SwiftUI
 import CoreImage.CIFilterBuiltins
 
+
 #if os(iOS) || os(watchOS) || os(tvOS)
 @available(iOS 14.0, *)
 extension UIImage {
@@ -22,17 +23,40 @@ extension UIImage {
             colorFilter.setValue(filter.outputImage, forKey: "inputImage")
             colorFilter.setValue(QRCodeColor, forKey: "inputColor0")
             colorFilter.setValue(backgroundColor, forKey: "inputColor1")
-            if let outputImage = colorFilter.outputImage {
-                if let cgimg = context.createCGImage(outputImage, from: outputImage.extent) {
-                    return UIImage(cgImage: cgimg)
-                }
-            }
+            guard let ciImage = colorFilter.outputImage else { return UIImage()}
+            guard let cgImage = context.createCGImage(ciImage, from: ciImage.extent) else { return UIImage() }
+            return UIImage(cgImage: cgImage)
         } catch (let error) {
             print(error.localizedDescription)
         }
         return UIImage(systemName: "xmark.circle") ?? UIImage()
     }
 }
+@available(iOS 14.0, *)
+extension View {
+   public func generateQRCode<T: Codable>(from anyCodableObject: T,
+                                           backgroundColor: CIColor = .clear,
+                                           QRCodeColor: CIColor = .white, qrCodeSize: CGFloat = 60 ,
+                                           logo: Image, logoSize: CGFloat) -> some View {
+    
+    Image(uiImage: .generateQRCode(from: anyCodableObject,
+                                   backgroundColor: backgroundColor,
+                                   QRCodeColor: QRCodeColor))
+        .resizable()
+        .interpolation(.none)
+        .scaledToFill()
+        .frame(width: qrCodeSize, height: qrCodeSize)
+        .overlay(
+            logo
+                .resizable()
+                .scaledToFill()
+                .frame(width: logoSize, height: logoSize), alignment: .center
+        )
+    }
+}
+
+//
+//
 #elseif os(macOS)
 @available(macOS 11.00, *)
 extension NSImage {
@@ -46,19 +70,19 @@ extension NSImage {
         do {
             // Convert String to Data
             let data = try JSONEncoder().encode(anyCodableObject)
-            
+
             // Create CIFilter object for CIQRCodeGenerator
             guard let qrCodeFilter: CIFilter = CIFilter(name: "CIQRCodeGenerator") else { return NSImage(systemSymbolName: "xmark.octagon.fill", accessibilityDescription: nil) ?? NSImage() }
-            
+
             // Set the inputMessage for the codeData
             qrCodeFilter.setValue(data, forKey: "inputMessage")
-            
+
             // Create another CIFilter for setting foreground and background color
             guard let colorFilter = CIFilter(name: "CIFalseColor") else { return NSImage(systemSymbolName: "xmark.octagon.fill", accessibilityDescription: nil) ?? NSImage() }
             colorFilter.setValue(qrCodeFilter.outputImage, forKey: "inputImage")
             colorFilter.setValue(backgroundColor, forKey: "inputColor1") // Background color
             colorFilter.setValue(QRCodeColor, forKey: "inputColor0") // Foreground color
-            
+
             // Create an affine transformation for scaling the generated image
             let transform = CGAffineTransform(scaleX: 10, y: 10)
             if let output = colorFilter.outputImage?.transformed(by: transform) {
